@@ -1612,7 +1612,11 @@
             const furl = window.location.origin + '/payu-failure.html';
 
             try {
-                const resp = await fetch('http://localhost:5055/payu/hash', {
+                // Choose hash endpoint: use Netlify Function in production, local server in dev
+                const hashEndpoint = (location.hostname.includes('netlify.app') || location.hostname.includes('vercel.app'))
+                  ? '/.netlify/functions/payu-hash'
+                  : 'http://localhost:5055/payu/hash';
+                const resp = await fetch(hashEndpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ txnid, amount, productinfo, firstname, email, phone, surl, furl })
