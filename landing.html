@@ -311,7 +311,7 @@
                             <button type="button" onclick="previousStep()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 rounded-lg font-semibold transition-all">
                                 ← Previous
                             </button>
-                            <button type="button" onclick="processPayment()" class="flex-1 bg-vastu-gold hover:bg-vastu-brown text-vastu-brown py-3 rounded-lg font-semibold transition-all">
+                    <button type="button" onclick="processPayment()" class="flex-1 bg-vastu-gold hover:bg-vastu-brown text-vastu-brown py-3 rounded-lg font-semibold transition-all">
                                 Pay Now
                             </button>
                         </div>
@@ -1575,7 +1575,7 @@
             e.target.value = value;
         });
 
-        function processPayment() {
+        async function processPayment() {
             const paymentMethod = document.getElementById('payment-method').value;
             
             if (!paymentMethod) {
@@ -1601,17 +1601,56 @@
                 }
             }
 
-            // Simulate payment processing
-            setTimeout(() => {
-                // Generate booking ID
-                const bookingId = 'VASTU' + Date.now().toString().slice(-8);
-                document.getElementById('booking-id').textContent = bookingId;
-                document.getElementById('confirmation-name').textContent = document.getElementById('form-name').value;
-                document.getElementById('confirmation-email').textContent = document.getElementById('form-email').value;
-                
-                // Show thank you page
-                showFormStep(3);
-            }, 1500);
+            // Collect fields for PayU
+            const txnid = 'TXN' + Date.now();
+            const amount = '1999.00';
+            const productinfo = 'Vastu Consultation';
+            const firstname = document.getElementById('form-name').value || 'Guest';
+            const email = document.getElementById('form-email').value || 'guest@example.com';
+            const phone = document.getElementById('form-phone').value || '';
+            const surl = window.location.origin + '/payu-success.html';
+            const furl = window.location.origin + '/payu-failure.html';
+
+            try {
+                const resp = await fetch('http://localhost:5055/payu/hash', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ txnid, amount, productinfo, firstname, email, phone, surl, furl })
+                });
+                const data = await resp.json();
+                if (!resp.ok) { alert(data.error || 'Hash error'); return; }
+
+                const { key, hash } = data;
+
+                // Build a form to submit to PayU
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'https://test.payu.in/_payment'; // change to https://secure.payu.in/_payment for production
+
+                const fields = {
+                    key,
+                    txnid,
+                    amount,
+                    productinfo,
+                    firstname,
+                    email,
+                    phone,
+                    surl,
+                    furl,
+                    hash
+                };
+                Object.entries(fields).forEach(([k, v]) => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = k;
+                    input.value = v;
+                    form.appendChild(input);
+                });
+                document.body.appendChild(form);
+                form.submit();
+            } catch (e) {
+                alert('Unable to initiate payment. Start the hash server and try again.');
+            }
         }
     </script>
 </body>
