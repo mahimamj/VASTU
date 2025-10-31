@@ -76,9 +76,28 @@ app.post('/payu/hash', (req, res) => {
   }
 });
 
+// Form data saving endpoint (for local development)
+app.post('/save-form', (req, res) => {
+  try {
+    const data = req.body || {};
+    // Log to console (in production, this would forward to Google Sheets)
+    console.log('Form submission:', JSON.stringify(data, null, 2));
+    
+    // In local dev, you can also save to a file or database
+    // For now, just log it and return success
+    return res.json({ 
+      success: true, 
+      message: 'Form data received (logged to console. Configure GOOGLE_APPS_SCRIPT_URL for production.)' 
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 const port = process.env.PORT || 5055;
 app.listen(port, () => {
   console.log(`PayU hash server listening on http://localhost:${port}`);
+  console.log(`Form saving endpoint available at http://localhost:${port}/save-form`);
 });
 
 
