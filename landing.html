@@ -185,11 +185,19 @@
     <!-- Navbar -->
     <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-14 md:h-16">
-                <div class="flex items-center">
+            <div class="flex justify-between items-center h-14 md:h-16 relative">
+                <!-- Mobile: Centered Logo (only visible on mobile) -->
+                <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center md:hidden z-10">
+                    <div class="text-xl">🏛️</div>
+                    <h1 class="text-lg font-bold bg-gradient-to-r from-vastu-gold to-vastu-orange bg-clip-text text-transparent ml-2">Vastu Easy</h1>
+                </div>
+                <!-- Desktop: Left Logo -->
+                <div class="hidden md:flex items-center">
                     <div class="text-xl md:text-2xl">🏛️</div>
                     <h1 class="text-lg md:text-2xl font-bold text-vastu-brown ml-2">Vastu Easy</h1>
                 </div>
+                <!-- Invisible spacer on mobile to balance the centered logo -->
+                <div class="w-12 md:w-0 md:hidden"></div>
                 <div class="hidden md:flex items-baseline space-x-6 lg:space-x-8">
                     <a href="#home" class="text-vastu-brown hover:text-vastu-teal transition-colors font-medium text-sm lg:text-base">Home</a>
                     <a href="#principles" class="text-vastu-brown hover:text-vastu-teal transition-colors font-medium text-sm lg:text-base">Principles</a>
@@ -393,7 +401,7 @@
     </div>
 
     <!-- Hero Section (moved back to first) -->
-    <div id="home" class="relative min-h-[70vh] md:min-h-[75vh] flex items-start justify-center overflow-hidden spiritual-pattern pt-4 md:pt-8" style="background: linear-gradient(135deg, #a78bfa 0%, #c084fc 30%, #f472b6 60%, #fb923c 100%); position: relative;">
+    <div id="home" class="relative min-h-[60vh] md:min-h-[75vh] flex items-start justify-center overflow-hidden spiritual-pattern pt-4 md:pt-8 pb-8 md:pb-16" style="background: linear-gradient(135deg, #a78bfa 0%, #c084fc 30%, #f472b6 60%, #fb923c 100%); position: relative;">
         <!-- Animated Background Particles -->
         <div class="absolute inset-0 overflow-hidden">
             <div class="absolute top-20 left-10 w-48 h-48 md:w-72 md:h-72 bg-white opacity-10 rounded-full blur-3xl animate-pulse"></div>
@@ -430,7 +438,7 @@
             <div class="absolute -bottom-10 -left-10 w-64 h-64 md:w-96 md:h-96 bg-yellow-300 bg-opacity-20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
         </div>
         
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 md:pt-8 pb-12 md:pb-16">
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 md:pt-8 pb-6 md:pb-16">
             <div class="text-center fade-in">
                 <div class="text-5xl sm:text-6xl md:text-7xl mb-3 md:mb-4 float-animation transform hover:scale-110 transition-transform duration-300 cursor-pointer" style="filter: drop-shadow(0 10px 30px rgba(255,255,255,0.3));">🏛️</div>
                 <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 md:mb-3 drop-shadow-2xl transform hover:scale-105 transition-transform duration-300 px-2">
@@ -467,7 +475,7 @@
     </div>
 
     <!-- About Our Consultants Section -->
-    <section id="consultants" class="py-16 bg-vastu-light">
+    <section id="consultants" class="py-8 md:py-16 bg-vastu-light">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-10">
                 <h2 class="text-4xl font-bold text-vastu-brown mb-3">About Our Consultants</h2>
