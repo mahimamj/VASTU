@@ -17,8 +17,9 @@
 
 function doPost(e) {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Form Submissions') || 
-                  SpreadsheetApp.getActiveSpreadsheet().insertSheet('Form Submissions');
+    // Use the first sheet in the spreadsheet (usually the main sheet)
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = spreadsheet.getSheets()[0] || spreadsheet.insertSheet('Form Submissions');
     
     // If first row is empty, add headers
     if (sheet.getLastRow() === 0) {
@@ -36,9 +37,17 @@ function doPost(e) {
       ]);
     }
     
-    const data = JSON.parse(e.postData.contents);
+    // Parse the incoming data
+    let data = {};
+    if (e.postData && e.postData.contents) {
+      data = JSON.parse(e.postData.contents);
+    } else {
+      data = JSON.parse(e.parameter.data || '{}');
+    }
+    
     const timestamp = new Date();
     
+    // Append the row with all the form data
     sheet.appendRow([
       timestamp,
       data.name || '',
@@ -48,7 +57,7 @@ function doPost(e) {
       data.dob || '',
       data.questions || '',
       data.paymentMethod || 'N/A',
-      data.amount || '1999',
+      data.amount || '2100',
       data.status || 'Pending'
     ]);
     
@@ -57,8 +66,16 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.JSON);
       
   } catch (error) {
+    // Log error for debugging
+    Logger.log('Error: ' + error.toString());
+    Logger.log('Event data: ' + JSON.stringify(e));
+    
     return ContentService
-      .createTextOutput(JSON.stringify({success: false, error: error.toString()}))
+      .createTextOutput(JSON.stringify({
+        success: false, 
+        error: error.toString(),
+        details: error.stack || ''
+      }))
       .setMimeType(ContentService.MimeType.JSON);
   }
 }
