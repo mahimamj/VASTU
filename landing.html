@@ -10,16 +10,16 @@
             theme: {
                 extend: {
                     colors: {
-                        // Light, airy theme
-                        'vastu-gold': '#f59e0b',      // CTA accent
-                        'vastu-cream': '#ffffff',     // Page background
-                        'vastu-brown': '#334155',     // Slate 700 for headings
-                        'vastu-teal': '#a78bfa',      // Violet 300 (primary)
-                        'vastu-sage': '#f0abfc',      // Fuchsia 300 (secondary)
-                        'vastu-light': '#f8fafc',     // Section bg
-                        'vastu-pastel': '#fdf2f8',    // Pink 50 subtle wash
-                        'vastu-orange': '#fdba74',    // Orange 300 highlight
-                        'vastu-amber': '#f59e0b',     // Amber 500
+                        // Professional cohesive theme
+                        'vastu-gold': '#d97706',      // Warm terracotta accent (Amber 600)
+                        'vastu-cream': '#faf9f7',     // Warm off-white background
+                        'vastu-brown': '#1e293b',     // Deep slate for text (Slate 800)
+                        'vastu-teal': '#ea580c',      // Rich orangish terracotta (Orange 600) - primary
+                        'vastu-sage': '#fb923c',      // Soft orangish (Orange 400) - secondary
+                        'vastu-light': '#fff7ed',     // Light cream/orange tint for sections (Orange 50)
+                        'vastu-pastel': '#fef3e8',    // Warm cream accent
+                        'vastu-orange': '#ea580c',    // Rich terracotta (Orange 600)
+                        'vastu-amber': '#d97706',     // Amber 600 - matches gold
                     },
                 },
             },
@@ -27,7 +27,7 @@
     </script>
     <style>
         .gradient-overlay {
-            background: linear-gradient(135deg, rgba(45, 125, 125, 0.95) 0%, rgba(139, 111, 71, 0.95) 100%);
+            background: linear-gradient(135deg, rgba(234, 88, 12, 0.95) 0%, rgba(139, 111, 71, 0.95) 100%);
         }
         .card-hover:hover {
             transform: translateY(-5px);
@@ -114,7 +114,7 @@
         .chakra-bg {
             position: absolute;
             font-size: 150px;
-            color: rgba(13, 148, 136, 0.1);
+            color: rgba(234, 88, 12, 0.1);
             user-select: none;
             pointer-events: none;
             animation: float-slow 25s ease-in-out infinite;
@@ -189,7 +189,7 @@
                 <!-- Mobile: Centered Logo (only visible on mobile) -->
                 <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center md:hidden z-10">
                     <img src="logo.jpg" alt="Vastu Easy Logo" class="h-10 w-10 object-contain">
-                    <h1 class="text-lg font-bold bg-gradient-to-r from-vastu-gold to-vastu-orange bg-clip-text text-transparent ml-2">Vastu Easy</h1>
+                    <h1 class="text-lg font-bold bg-gradient-to-r from-vastu-teal to-vastu-sage bg-clip-text text-transparent ml-2">Vastu Easy</h1>
                 </div>
                 <!-- Desktop: Left Logo -->
                 <div class="hidden md:flex items-center">
@@ -222,7 +222,7 @@
                         </svg>
                         <span class="ml-1 md:ml-2 hidden sm:inline text-xs md:text-sm">@vastueasyofficial</span>
                     </a>
-                    <button onclick="openModal()" class="hidden md:block bg-gradient-to-r from-vastu-orange to-vastu-gold hover:from-vastu-gold hover:to-vastu-orange text-white px-4 lg:px-6 py-2 rounded-lg transition-all duration-200 font-medium shadow-md text-sm lg:text-base">
+                    <button onclick="openModal()" class="hidden md:block bg-gradient-to-r from-vastu-teal to-vastu-sage hover:from-vastu-sage hover:to-vastu-teal text-white px-4 lg:px-6 py-2 rounded-lg transition-all duration-200 font-medium shadow-md text-sm lg:text-base">
                         Book Consultation
                     </button>
                     <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-vastu-brown hover:text-vastu-teal">
@@ -243,7 +243,7 @@
                     <a href="#transformations" onclick="toggleMobileMenu()" class="block text-vastu-brown hover:text-vastu-teal transition-colors font-medium py-2 px-3 rounded-lg hover:bg-gray-50">Transformations</a>
                     <a href="#faq" onclick="toggleMobileMenu()" class="block text-vastu-brown hover:text-vastu-teal transition-colors font-medium py-2 px-3 rounded-lg hover:bg-gray-50">FAQ</a>
                     <a href="#contact" onclick="toggleMobileMenu()" class="block text-vastu-brown hover:text-vastu-teal transition-colors font-medium py-2 px-3 rounded-lg hover:bg-gray-50">Contact</a>
-                    <button onclick="openModal(); toggleMobileMenu();" class="w-full bg-gradient-to-r from-vastu-orange to-vastu-gold hover:from-vastu-gold hover:to-vastu-orange text-white px-4 py-2 rounded-lg transition-all duration-200 font-medium shadow-md mt-2">
+                    <button onclick="openModal(); toggleMobileMenu();" class="w-full bg-gradient-to-r from-vastu-teal to-vastu-sage hover:from-vastu-sage hover:to-vastu-teal text-white px-4 py-2 rounded-lg transition-all duration-200 font-medium shadow-md mt-2">
                         Book Consultation
                     </button>
                 </div>
@@ -274,7 +274,7 @@
         <div class="modal-content">
             <div class="bg-vastu-teal text-white p-4 rounded-t-lg flex justify-between items-center">
                 <h2 class="text-2xl font-bold">Book Your Vastu Consultation</h2>
-                <span class="close-modal text-3xl cursor-pointer hover:text-vastu-gold" onclick="closeModal()">&times;</span>
+                <span class="close-modal text-3xl cursor-pointer hover:text-vastu-teal" onclick="closeModal()">&times;</span>
             </div>
             
             <!-- Step 1: Contact Form -->
@@ -358,7 +358,7 @@
                             <button type="button" onclick="previousStep()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 rounded-lg font-semibold transition-all">
                                 ← Previous
                             </button>
-                    <button type="button" onclick="processPayment()" class="flex-1 bg-vastu-gold hover:bg-vastu-brown text-vastu-brown py-3 rounded-lg font-semibold transition-all">
+                    <button type="button" onclick="processPayment()" class="flex-1 bg-gradient-to-r from-vastu-teal to-vastu-sage hover:from-vastu-sage hover:to-vastu-teal text-white py-3 rounded-lg font-semibold transition-all">
                                 Pay Now
                             </button>
                         </div>
@@ -401,12 +401,12 @@
     </div>
 
     <!-- Hero Section (moved back to first) -->
-    <div id="home" class="relative min-h-[60vh] md:min-h-[75vh] flex items-start justify-center overflow-hidden spiritual-pattern pt-4 md:pt-8 pb-8 md:pb-16" style="background: linear-gradient(135deg, #a78bfa 0%, #c084fc 30%, #f472b6 60%, #fb923c 100%); position: relative;">
+    <div id="home" class="relative min-h-[60vh] md:min-h-[75vh] flex items-start justify-center overflow-hidden spiritual-pattern pt-4 md:pt-8 pb-8 md:pb-16" style="background: linear-gradient(135deg, #faf9f7 0%, #fff7ed 50%, #fef3e8 100%); position: relative;">
         <!-- Animated Background Particles -->
         <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute top-20 left-10 w-48 h-48 md:w-72 md:h-72 bg-white opacity-10 rounded-full blur-3xl animate-pulse"></div>
-            <div class="absolute bottom-20 right-10 w-64 h-64 md:w-96 md:h-96 bg-yellow-300 opacity-15 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
-            <div class="absolute top-1/2 left-1/2 w-56 h-56 md:w-80 md:h-80 bg-pink-300 opacity-10 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+            <div class="absolute top-20 left-10 w-48 h-48 md:w-72 md:h-72 bg-vastu-teal opacity-10 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-20 right-10 w-64 h-64 md:w-96 md:h-96 bg-vastu-sage opacity-15 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/2 left-1/2 w-56 h-56 md:w-80 md:h-80 bg-vastu-teal opacity-8 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
         </div>
         
         <!-- Mantras and Chakras Background (hidden on mobile) -->
@@ -443,21 +443,20 @@
                 <div class="mb-3 md:mb-4 float-animation transform hover:scale-110 transition-transform duration-300 cursor-pointer flex justify-center" style="filter: drop-shadow(0 10px 30px rgba(255,255,255,0.3));">
                     <img src="logo.jpg" alt="Vastu Easy Logo" class="h-28 sm:h-32 md:h-40 lg:h-52 w-auto object-contain">
                 </div>
-                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 md:mb-3 drop-shadow-2xl transform hover:scale-105 transition-transform duration-300 px-2">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-vastu-brown mb-2 md:mb-3 transform hover:scale-105 transition-transform duration-300 px-2">
                     Harmony Through Vastu Easy
                 </h1>
-                <p class="text-sm sm:text-base md:text-lg text-white mb-5 md:mb-6 max-w-3xl mx-auto font-medium drop-shadow-lg px-4">
+                <p class="text-sm sm:text-base md:text-lg text-vastu-brown mb-5 md:mb-6 max-w-3xl mx-auto font-medium px-4 opacity-80">
                     Transform your space into a sanctuary of positive energy, prosperity, and peace
                 </p>
                 <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center px-4">
-                    <button onclick="openModal()" class="group w-full sm:w-auto bg-white hover:bg-gradient-to-r hover:from-vastu-gold hover:to-orange-400 text-vastu-brown hover:text-white px-6 md:px-8 py-3 md:py-4 rounded-full text-sm sm:text-base md:text-lg font-bold transition-all duration-300 shadow-2xl hover:shadow-yellow-300/50 transform hover:scale-105 hover:-translate-y-1 relative overflow-hidden">
+                    <button onclick="openModal()" class="group w-full sm:w-auto bg-gradient-to-r from-vastu-teal to-vastu-sage hover:from-vastu-sage hover:to-vastu-teal text-white px-6 md:px-8 py-3 md:py-4 rounded-full text-sm sm:text-base md:text-lg font-bold transition-all duration-300 shadow-2xl hover:shadow-orange-300/50 transform hover:scale-105 hover:-translate-y-1 relative overflow-hidden">
                         <span class="relative z-10 flex items-center justify-center gap-2">
                             Get Consultation
                             <span class="group-hover:animate-bounce">✨</span>
                         </span>
-                        <div class="absolute inset-0 bg-gradient-to-r from-vastu-gold to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </button>
-                    <button onclick="scrollToLearnMore()" class="w-full sm:w-auto bg-white bg-opacity-20 hover:bg-opacity-40 backdrop-blur-md text-white px-6 md:px-8 py-3 md:py-4 rounded-full text-sm sm:text-base md:text-lg font-bold transition-all duration-300 border-2 border-white border-opacity-50 hover:border-opacity-100 shadow-xl hover:shadow-white/30 transform hover:scale-105">
+                    <button onclick="scrollToLearnMore()" class="w-full sm:w-auto bg-white hover:bg-vastu-light border-2 border-vastu-teal text-vastu-teal hover:text-vastu-brown px-6 md:px-8 py-3 md:py-4 rounded-full text-sm sm:text-base md:text-lg font-bold transition-all duration-300 shadow-xl hover:shadow-lg transform hover:scale-105">
                         Learn More
                     </button>
                 </div>
@@ -508,7 +507,7 @@
             </div>
 
             <div class="text-center mt-10">
-                <button onclick="openModal()" class="inline-flex items-center gap-2 bg-vastu-gold text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:opacity-90">
+                <button onclick="openModal()" class="inline-flex items-center gap-2 bg-gradient-to-r from-vastu-teal to-vastu-sage hover:from-vastu-sage hover:to-vastu-teal text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all">
                     Book Consultation
                     <span class="text-xl">✨</span>
                 </button>
@@ -640,7 +639,7 @@
                 </div>
                 <div class="flex gap-6">
                     <div class="flex-shrink-0">
-                        <div class="bg-vastu-gold text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl">
+                        <div class="bg-gradient-to-br from-vastu-teal to-vastu-sage text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl">
                             ❤️
                         </div>
                     </div>
@@ -692,7 +691,7 @@
                 </div>
                 <div class="flex gap-6">
                     <div class="flex-shrink-0">
-                        <div class="bg-vastu-gold text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl">
+                        <div class="bg-gradient-to-br from-vastu-teal to-vastu-sage text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl">
                             🌟
                         </div>
                     </div>
@@ -724,7 +723,7 @@
                     <p class="text-sm text-vastu-brown mt-1">Verified Users</p>
                 </div>
                 <div class="bg-vastu-cream rounded-xl p-6 shadow-md">
-                    <div class="text-4xl font-bold text-vastu-gold mb-2" id="count-consultations">18,500+</div>
+                    <div class="text-4xl font-bold text-vastu-teal mb-2" id="count-consultations">18,500+</div>
                     <p class="text-vastu-brown font-semibold">Consultations</p>
                     <p class="text-sm text-vastu-brown mt-1">Successfully Completed</p>
                 </div>
@@ -751,7 +750,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-3">
-                        <div class="bg-vastu-gold text-white rounded-full p-3">
+                        <div class="bg-gradient-to-br from-vastu-teal to-vastu-sage text-white rounded-full p-3">
                             <span class="text-2xl">🏆</span>
                         </div>
                         <div class="text-left">
@@ -1044,8 +1043,8 @@
                                     <li>• Master bedroom facing Northeast</li>
                                 </ul>
                             </div>
-                            <div class="border-l-4 border-green-500 pl-4">
-                                <p class="text-sm font-semibold text-green-600 mb-2">AFTER ✅</p>
+                            <div class="border-l-4 border-orange-500 pl-4">
+                                <p class="text-sm font-semibold text-orange-600 mb-2">AFTER ✅</p>
                                 <ul class="text-sm text-vastu-brown space-y-1">
                                     <li>• Business revenue increased by 45%</li>
                                     <li>• Harmonious family relationships</li>
@@ -1065,7 +1064,7 @@
                 <div class="bg-vastu-cream rounded-2xl overflow-hidden shadow-xl">
                     <div class="p-6">
                         <div class="flex items-center mb-4">
-                            <div class="bg-vastu-gold text-white w-12 h-12 rounded-full flex items-center justify-center font-bold mr-3">
+                            <div class="bg-gradient-to-br from-vastu-teal to-vastu-sage text-white w-12 h-12 rounded-full flex items-center justify-center font-bold mr-3">
                                 R
                             </div>
                             <div>
@@ -1084,8 +1083,8 @@
                                     <li>• Main entrance facing South</li>
                                 </ul>
                             </div>
-                            <div class="border-l-4 border-green-500 pl-4">
-                                <p class="text-sm font-semibold text-green-600 mb-2">AFTER ✅</p>
+                            <div class="border-l-4 border-orange-500 pl-4">
+                                <p class="text-sm font-semibold text-orange-600 mb-2">AFTER ✅</p>
                                 <ul class="text-sm text-vastu-brown space-y-1">
                                     <li>• Productivity increased by 60%</li>
                                     <li>• Stable, motivated team</li>
@@ -1124,8 +1123,8 @@
                                     <li>• Cluttered living space</li>
                                 </ul>
                             </div>
-                            <div class="border-l-4 border-green-500 pl-4">
-                                <p class="text-sm font-semibold text-green-600 mb-2">AFTER ✅</p>
+                            <div class="border-l-4 border-orange-500 pl-4">
+                                <p class="text-sm font-semibold text-orange-600 mb-2">AFTER ✅</p>
                                 <ul class="text-sm text-vastu-brown space-y-1">
                                     <li>• Health improved significantly</li>
                                     <li>• Energy levels restored</li>
@@ -1164,8 +1163,8 @@
                                     <li>• Poor concentration levels</li>
                                 </ul>
                             </div>
-                            <div class="border-l-4 border-green-500 pl-4">
-                                <p class="text-sm font-semibold text-green-600 mb-2">AFTER ✅</p>
+                            <div class="border-l-4 border-orange-500 pl-4">
+                                <p class="text-sm font-semibold text-orange-600 mb-2">AFTER ✅</p>
                                 <ul class="text-sm text-vastu-brown space-y-1">
                                     <li>• Promoted within 6 months</li>
                                     <li>• Study room moved to Northeast</li>
@@ -1320,7 +1319,7 @@
     </div>
 
     <!-- Scrolling Consultation Banner - Bottom Sticky -->
-    <div class="bg-gradient-to-r from-vastu-orange to-vastu-gold text-white py-3 overflow-hidden relative fixed bottom-0 left-0 right-0 z-40 cursor-pointer hover:from-vastu-gold hover:to-vastu-orange transition-all shadow-lg" onclick="openModal()">
+    <div class="bg-gradient-to-r from-vastu-teal to-vastu-sage text-white py-3 overflow-hidden relative fixed bottom-0 left-0 right-0 z-40 cursor-pointer hover:from-vastu-sage hover:to-vastu-teal transition-all shadow-lg" onclick="openModal()">
         <div class="flex">
             <div class="scrolling-text font-bold text-lg md:text-xl whitespace-nowrap">
                 🏛️ Book Your Vastu Consultation Now - Get Expert Advice Today | Transform Your Space for Prosperity & Harmony | Limited Time Offer - Book Now! 🏛️
@@ -1347,20 +1346,20 @@
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
                     <ul class="space-y-2 text-vastu-cream">
-                        <li><a href="#home" class="hover:text-vastu-gold">Home</a></li>
-                        <li><a href="#principles" class="hover:text-vastu-gold">Principles</a></li>
-                        <li><a href="#services" class="hover:text-vastu-gold">Services</a></li>
-                        <li><a href="#transformations" class="hover:text-vastu-gold">Transformations</a></li>
-                        <li><a href="#benefits" class="hover:text-vastu-gold">Benefits</a></li>
+                        <li><a href="#home" class="hover:text-vastu-teal">Home</a></li>
+                        <li><a href="#principles" class="hover:text-vastu-teal">Principles</a></li>
+                        <li><a href="#services" class="hover:text-vastu-teal">Services</a></li>
+                        <li><a href="#transformations" class="hover:text-vastu-teal">Transformations</a></li>
+                        <li><a href="#benefits" class="hover:text-vastu-teal">Benefits</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Services</h4>
                     <ul class="space-y-2 text-vastu-cream">
-                        <li><a href="#" class="hover:text-vastu-gold">Home Consultation</a></li>
-                        <li><a href="#" class="hover:text-vastu-gold">Business Vastu</a></li>
-                        <li><a href="#" class="hover:text-vastu-gold">New Construction</a></li>
-                        <li><a href="#" class="hover:text-vastu-gold">Vastu Remedies</a></li>
+                        <li><a href="#" class="hover:text-vastu-teal">Home Consultation</a></li>
+                        <li><a href="#" class="hover:text-vastu-teal">Business Vastu</a></li>
+                        <li><a href="#" class="hover:text-vastu-teal">New Construction</a></li>
+                        <li><a href="#" class="hover:text-vastu-teal">Vastu Remedies</a></li>
                     </ul>
                 </div>
                 <div>
@@ -1381,7 +1380,7 @@
 
     <!-- Sticky Animated Consultation Button -->
     <div class="fixed bottom-24 right-8 z-50">
-        <button onclick="openModal()" class="animated-consultation-btn text-vastu-brown px-6 py-4 rounded-full font-bold text-base md:text-lg shadow-2xl transition-all duration-300 flex items-center gap-2 whitespace-nowrap">
+        <button onclick="openModal()" class="bg-gradient-to-r from-vastu-teal to-vastu-sage hover:from-vastu-sage hover:to-vastu-teal text-white px-6 py-4 rounded-full font-bold text-base md:text-lg shadow-2xl transition-all duration-300 flex items-center gap-2 whitespace-nowrap">
             <span>Book Your Vastu Consultation Now</span>
             <span class="text-xl animate-bounce">✨</span>
         </button>
@@ -1503,7 +1502,7 @@
             const isGood = roomCompat.good.includes(facingDirection.toLowerCase());
 
             if (isIdeal) {
-                resultDiv.className = 'mt-4 p-4 rounded-lg bg-green-100 text-green-700';
+                resultDiv.className = 'mt-4 p-4 rounded-lg bg-orange-100 text-orange-700';
                 resultDiv.innerHTML = `✓ Excellent! This direction is ideal for ${roomType}. You will experience maximum positive energy and benefits.`;
             } else if (isGood) {
                 resultDiv.className = 'mt-4 p-4 rounded-lg bg-yellow-100 text-yellow-700';
