@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Success - Vastu Consultation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'vastu-gold': '#d97706',
+                        'vastu-cream': '#faf9f7',
+                        'vastu-brown': '#1e293b',
+                        'vastu-teal': '#ea580c',
+                        'vastu-sage': '#fb923c',
+                        'vastu-light': '#fff7ed',
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-vastu-cream min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-2xl w-full bg-white rounded-2xl shadow-2xl p-8 md:p-12 text-center fade-in">
+        <!-- Success Icon -->
+        <div class="mb-6">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <h1 class="text-4xl font-bold text-vastu-brown mb-4">Payment Successful!</h1>
+        <p class="text-lg text-gray-600 mb-8">
+            Thank you for your payment. Your Vastu consultation booking has been confirmed successfully.
+        </p>
+
+        <!-- Transaction Details -->
+        <div class="bg-vastu-light rounded-lg p-6 mb-8 text-left">
+            <h2 class="text-xl font-semibold text-vastu-brown mb-4">Transaction Details</h2>
+            <div class="space-y-3">
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Transaction ID:</span>
+                    <span class="font-semibold text-vastu-brown" id="txnid">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Amount Paid:</span>
+                    <span class="font-semibold text-vastu-teal">₹2,100</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Status:</span>
+                    <span class="font-semibold text-green-600">Success</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Steps -->
+        <div class="bg-vastu-cream rounded-lg p-6 mb-8">
+            <h3 class="text-lg font-semibold text-vastu-brown mb-3">What's Next?</h3>
+            <p class="text-gray-700 mb-4">
+                Our team will contact you shortly at the phone number and email you provided to schedule your consultation.
+            </p>
+            <p class="text-sm text-gray-600">
+                For any queries, please contact us at <a href="tel:+919873182466" class="text-vastu-teal hover:underline">+91 98731 82466</a>
+            </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/landing.html" class="px-6 py-3 bg-gradient-to-r from-vastu-teal to-vastu-sage hover:from-vastu-sage hover:to-vastu-teal text-white rounded-lg font-semibold transition-all">
+                Back to Home
+            </a>
+            <a href="/index.html" class="px-6 py-3 bg-vastu-cream border-2 border-vastu-brown text-vastu-brown rounded-lg font-semibold hover:bg-vastu-light transition-all">
+                Visit Website
+            </a>
+        </div>
+
+        <!-- Payment Receipt Note -->
+        <p class="text-sm text-gray-500 mt-8">
+            A payment receipt has been sent to your email. Please check your inbox.
+        </p>
+    </div>
+
+    <script>
+        // Extract transaction details from URL parameters (PayU sends these)
+        const urlParams = new URLSearchParams(window.location.search);
+        const txnid = urlParams.get('txnid') || urlParams.get('txnid');
+        const status = urlParams.get('status') || 'Success';
+        
+        if (txnid) {
+            document.getElementById('txnid').textContent = txnid;
+        }
+
+        // Log payment success for analytics
+        console.log('Payment successful:', {
+            txnid: txnid,
+            status: status,
+            timestamp: new Date().toISOString()
+        });
+    </script>
+</body>
+</html>
+
