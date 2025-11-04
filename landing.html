@@ -1777,6 +1777,8 @@
             const phone = document.getElementById('form-phone').value || '';
             const surl = window.location.origin + '/payu-success.html';
             const furl = window.location.origin + '/payu-failure.html';
+            // Merchant phone number for PayU account (+91 98731 82466)
+            const merchantPhone = '9873182466';
 
             // Save payment data to Google Sheets
             const paymentData = {
@@ -1817,7 +1819,17 @@
                 const resp = await fetch(hashEndpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ txnid, amount, productinfo, firstname, email, phone, surl, furl })
+                    body: JSON.stringify({ 
+                        txnid, 
+                        amount, 
+                        productinfo, 
+                        firstname, 
+                        email, 
+                        phone: phone || merchantPhone, 
+                        surl, 
+                        furl,
+                        udf1: merchantPhone  // Include merchant phone in UDF for tracking
+                    })
                 });
                 const data = await resp.json();
                 if (!resp.ok) { alert(data.error || 'Hash error'); return; }
@@ -1827,7 +1839,7 @@
                 // Build a form to submit to PayU
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = 'https://test.payu.in/_payment'; // change to https://secure.payu.in/_payment for production
+                form.action = 'https://secure.payu.in/_payment'; // Production environment
 
                 const fields = {
                     key,
@@ -1836,10 +1848,11 @@
                     productinfo,
                     firstname,
                     email,
-                    phone,
+                    phone: phone || merchantPhone,
                     surl,
                     furl,
-                    hash
+                    hash,
+                    udf1: merchantPhone  // Merchant phone number for PayU account tracking
                 };
                 Object.entries(fields).forEach(([k, v]) => {
                     const input = document.createElement('input');

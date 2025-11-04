@@ -33,7 +33,8 @@ function doPost(e) {
         'Vastu Questions',
         'Payment Method',
         'Amount',
-        'Status'
+        'Status',
+        'Merchant Phone'
       ]);
     }
     
@@ -58,7 +59,8 @@ function doPost(e) {
       data.questions || '',
       data.paymentMethod || 'N/A',
       data.amount || '2100',
-      data.status || 'Pending'
+      data.status || 'Pending',
+      '9873182466'  // PayU Merchant Phone: +91 98731 82466
     ]);
     
     return ContentService
