@@ -187,12 +187,12 @@
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-14 md:h-16 relative">
                 <!-- Mobile: Centered Logo (only visible on mobile) -->
-                <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center md:hidden z-10">
+                <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center md:hidden z-10 cursor-pointer" onclick="openModal()">
                     <img src="logo.jpg" alt="Vastu Easy Logo" class="h-10 w-10 object-contain">
                     <h1 class="text-lg font-bold bg-gradient-to-r from-vastu-teal to-vastu-sage bg-clip-text text-transparent ml-2">Vastu Easy</h1>
                 </div>
                 <!-- Desktop: Left Logo -->
-                <div class="hidden md:flex items-center">
+                <div class="hidden md:flex items-center cursor-pointer" onclick="openModal()">
                     <img src="logo.jpg" alt="Vastu Easy Logo" class="h-12 md:h-14 w-12 md:w-14 object-contain">
                     <h1 class="text-lg md:text-2xl font-bold text-vastu-brown ml-2">Vastu Easy</h1>
                 </div>
@@ -440,7 +440,7 @@
         
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 md:pt-8 pb-6 md:pb-16">
             <div class="text-center fade-in">
-                <div class="mb-3 md:mb-4 float-animation transform hover:scale-110 transition-transform duration-300 cursor-pointer flex justify-center" style="filter: drop-shadow(0 10px 30px rgba(255,255,255,0.3));">
+                <div class="mb-3 md:mb-4 float-animation transform hover:scale-110 transition-transform duration-300 cursor-pointer flex justify-center" onclick="openModal()" style="filter: drop-shadow(0 10px 30px rgba(255,255,255,0.3));">
                     <img src="logo.jpg" alt="Vastu Easy Logo" class="h-28 sm:h-32 md:h-40 lg:h-52 w-auto object-contain">
                 </div>
                 <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-vastu-brown mb-2 md:mb-3 transform hover:scale-105 transition-transform duration-300 px-2">
@@ -478,7 +478,7 @@
             </div>
 
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+                <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onclick="openModal()">
                     <div class="h-32 md:h-48 bg-gray-100 overflow-hidden">
                         <img src="BHASKAR DAS.png" alt="Dr. Bhaskar Das" class="w-full h-full object-cover" style="object-position: center 60%;">
                     </div>
@@ -488,7 +488,7 @@
                         <div class="text-amber-500 mt-2 text-xs md:text-sm">★★★★★</div>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+                <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onclick="openModal()">
                     <div class="h-32 md:h-48 bg-gray-100 overflow-hidden">
                         <img src="ASHISH.png" alt="Acharya Ashish Gambhir" class="w-full h-full object-cover" style="object-position: center 60%;">
                     </div>
@@ -498,7 +498,7 @@
                         <div class="text-amber-500 mt-2 text-xs md:text-sm">★★★★★</div>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+                <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onclick="openModal()">
                     <div class="h-32 md:h-48 bg-gray-100 overflow-hidden">
                         <img src="PARUL .png" alt="Vastu Parul Aggarwal" class="w-full h-full object-cover" style="object-position: center 60%;">
                     </div>
@@ -508,7 +508,7 @@
                         <div class="text-amber-500 mt-2 text-xs md:text-sm">★★★★★</div>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+                <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onclick="openModal()">
                     <div class="h-32 md:h-48 bg-gray-100 overflow-hidden">
                         <img src="CHETNA JI.png" alt="Acharya Chetna" class="w-full h-full object-cover" style="object-position: center 60%;">
                     </div>
@@ -1349,7 +1349,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
-                    <div class="flex items-center mb-4">
+                    <div class="flex items-center mb-4 cursor-pointer" onclick="openModal()">
                         <img src="logo.jpg" alt="Vastu Easy Logo" class="h-12 w-12 object-contain">
                         <h3 class="text-2xl font-bold ml-2">Vastu Easy</h3>
                     </div>
