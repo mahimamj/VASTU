@@ -1,0 +1,9 @@
+# Netlify redirects file
+# Ensure PayU callback pages are accessible
+
+/payu-success.html  /payu-success.html  200
+/payu-failure.html  /payu-failure.html  200
+
+# Fallback for SPA if needed
+/*    /index.html   200
+
