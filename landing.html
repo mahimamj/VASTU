@@ -1616,6 +1616,10 @@
 
         function updateTipsCarousel() {
             const container = document.getElementById('tips-container');
+            if (!container) {
+                // Tips container doesn't exist, skip update
+                return;
+            }
             container.style.transform = `translateX(-${currentTip * 100}%)`;
         }
 
@@ -1680,8 +1684,10 @@
             });
         });
 
-        // Auto-rotate tips every 5 seconds
-        setInterval(nextTip, 5000);
+        // Auto-rotate tips every 5 seconds (only if tips container exists)
+        if (document.getElementById('tips-container')) {
+            setInterval(nextTip, 5000);
+        }
 
         // Multi-step Form Functions
         function showFormStep(step) {
@@ -1697,40 +1703,75 @@
         }
 
         async function nextStep() {
+            console.log('nextStep() called');
             const form = document.getElementById('consultationForm');
-            if (form.checkValidity()) {
-                // Save form data to Google Sheets
-                const formData = {
-                    name: document.getElementById('form-name').value,
-                    city: document.getElementById('form-city').value,
-                    email: document.getElementById('form-email').value,
-                    phone: document.getElementById('form-phone').value,
-                    dob: document.getElementById('form-dob').value,
-                    questions: document.getElementById('form-questions').value,
-                    amount: '2100.00',
-                    paymentMethod: 'N/A',
-                    status: 'Form Submitted - Payment Pending'
-                };
-
-                try {
-                    const endpoint = `${BACKEND_URL}/save-form`;
-                    
-                    await fetch(endpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formData)
-                    });
-                } catch (error) {
-                    console.log('Error saving form data:', error);
-                    // Continue anyway - don't block user flow
-                }
-
-                if (currentFormStep < totalFormSteps) {
-                    showFormStep(currentFormStep + 1);
-                }
-            } else {
-                form.reportValidity();
+            
+            if (!form) {
+                console.error('Form not found!');
+                alert('Form not found. Please refresh the page.');
+                return;
             }
+
+            // Check form validity
+            if (!form.checkValidity()) {
+                console.log('Form validation failed');
+                form.reportValidity();
+                return;
+            }
+
+            console.log('Form is valid, proceeding...');
+
+            // Save form data to Google Sheets
+            const formData = {
+                name: document.getElementById('form-name').value,
+                city: document.getElementById('form-city').value,
+                email: document.getElementById('form-email').value,
+                phone: document.getElementById('form-phone').value,
+                dob: document.getElementById('form-dob').value,
+                questions: document.getElementById('form-questions').value,
+                amount: '2100.00',
+                paymentMethod: 'N/A',
+                status: 'Form Submitted - Payment Pending'
+            };
+
+            console.log('Saving form data:', formData);
+            console.log('Backend URL:', BACKEND_URL);
+
+            // Move to next step FIRST (don't wait for API)
+            if (currentFormStep < totalFormSteps) {
+                console.log('Moving to step:', currentFormStep + 1);
+                showFormStep(currentFormStep + 1);
+            } else {
+                console.log('Already on last step');
+            }
+
+            // Save to backend (non-blocking - fire and forget)
+            const endpoint = `${BACKEND_URL}/save-form`;
+            console.log('Calling endpoint:', endpoint);
+            
+            // Use fetch without await - don't block the UI
+            fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    console.warn('Backend response not OK:', response.status);
+                } else {
+                    console.log('Form data saved successfully');
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data) {
+                    console.log('Backend response:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Error saving form data:', error);
+                // Continue anyway - don't block user flow
+            });
         }
 
         function previousStep() {
@@ -1769,61 +1810,75 @@
         });
 
         async function processPayment() {
-            const paymentMethod = document.getElementById('payment-method').value;
+            console.log('processPayment() called');
             
-            if (!paymentMethod) {
-                alert('Please select a payment method');
-                return;
+            // Disable the button to prevent multiple clicks
+            const payButton = event?.target || document.querySelector('button[onclick="processPayment()"]');
+            if (payButton) {
+                payButton.disabled = true;
+                payButton.textContent = 'Processing...';
+                console.log('Button disabled to prevent multiple clicks');
             }
-
-            if (paymentMethod === 'card') {
-                const cardNumber = document.getElementById('card-number').value;
-                const cardExpiry = document.getElementById('card-expiry').value;
-                const cardCvv = document.getElementById('card-cvv').value;
-                const cardName = document.getElementById('card-name').value;
-                
-                if (!cardNumber || !cardExpiry || !cardCvv || !cardName) {
-                    alert('Please fill all card details');
-                    return;
-                }
-            } else if (paymentMethod === 'upi') {
-                const upiId = document.getElementById('upi-id').value;
-                if (!upiId) {
-                    alert('Please enter UPI ID');
-                    return;
-                }
-            }
-
-            // Collect fields for PayU
-            const txnid = 'TXN' + Date.now();
-            const amount = '2100.00';
-            const productinfo = 'Vastu Consultation';
-            const firstname = document.getElementById('form-name').value || 'Guest';
-            const email = document.getElementById('form-email').value || 'guest@example.com';
-            const phone = document.getElementById('form-phone').value || '';
-            const surl = window.location.origin + '/payu-success.html';
-            const furl = window.location.origin + '/payu-failure.html';
-            // Merchant phone number for PayU account (+91 98731 82466)
-            const merchantPhone = '9873182466';
-
-            // Save payment data to Google Sheets
-            const paymentData = {
-                name: firstname,
-                city: document.getElementById('form-city').value,
-                email: email,
-                phone: phone,
-                dob: document.getElementById('form-dob').value,
-                questions: document.getElementById('form-questions').value,
-                paymentMethod: paymentMethod,
-                amount: amount,
-                txnid: txnid,
-                status: 'Payment Initiated'
-            };
-
+            
             try {
-                // Save payment data
-                const saveEndpoint = `${BACKEND_URL}/save-form`;
+                const paymentMethod = document.getElementById('payment-method')?.value;
+                console.log('Payment method:', paymentMethod);
                 
+                if (!paymentMethod) {
+                    alert('Please select a payment method');
+                    return;
+                }
+
+                if (paymentMethod === 'card') {
+                    const cardNumber = document.getElementById('card-number')?.value;
+                    const cardExpiry = document.getElementById('card-expiry')?.value;
+                    const cardCvv = document.getElementById('card-cvv')?.value;
+                    const cardName = document.getElementById('card-name')?.value;
+                    
+                    console.log('Card details:', { cardNumber: cardNumber ? '***' : 'empty', cardExpiry, cardCvv: cardCvv ? '***' : 'empty', cardName });
+                    
+                    if (!cardNumber || !cardExpiry || !cardCvv || !cardName) {
+                        alert('Please fill all card details');
+                        return;
+                    }
+                } else if (paymentMethod === 'upi') {
+                    const upiId = document.getElementById('upi-id')?.value;
+                    console.log('UPI ID:', upiId);
+                    
+                    if (!upiId) {
+                        alert('Please enter UPI ID');
+                        return;
+                    }
+                }
+
+                // Collect fields for PayU
+                const txnid = 'TXN' + Date.now();
+                const amount = '2100.00';
+                const productinfo = 'Vastu Consultation';
+                const firstname = document.getElementById('form-name').value || 'Guest';
+                const email = document.getElementById('form-email').value || 'guest@example.com';
+                const phone = document.getElementById('form-phone').value || '';
+                const surl = window.location.origin + '/payu-success.html';
+                const furl = window.location.origin + '/payu-failure.html';
+                // Merchant phone number for PayU account (+91 98731 82466)
+                const merchantPhone = '9873182466';
+
+                // Save payment data to Google Sheets
+                const paymentData = {
+                    name: firstname,
+                    city: document.getElementById('form-city').value,
+                    email: email,
+                    phone: phone,
+                    dob: document.getElementById('form-dob').value,
+                    questions: document.getElementById('form-questions').value,
+                    paymentMethod: paymentMethod,
+                    amount: amount,
+                    txnid: txnid,
+                    status: 'Payment Initiated'
+                };
+
+                // Save payment data (non-blocking)
+                const saveEndpoint = `${BACKEND_URL}/save-form`;
                 fetch(saveEndpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1831,17 +1886,32 @@
                 }).catch(err => console.log('Error saving payment data:', err));
 
                 // Continue with PayU payment
-            } catch (error) {
-                console.log('Error:', error);
-            }
-
-            try {
-                // Get PayU hash from backend
-                const hashEndpoint = `${BACKEND_URL}/payu/hash`;
-                const resp = await fetch(hashEndpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
+                try {
+                    console.log('Getting PayU hash from backend...');
+                    
+                    // First, wake up the Render backend (free tier spins down after inactivity)
+                    // This helps avoid timeout on the first request
+                    try {
+                        console.log('Waking up backend...');
+                        const wakeController = new AbortController();
+                        const wakeTimeout = setTimeout(() => wakeController.abort(), 10000); // 10 second timeout
+                        
+                        await fetch(`${BACKEND_URL}/health`, { 
+                            method: 'GET',
+                            signal: wakeController.signal
+                        }).catch(() => {
+                            console.log('Wake-up request failed or timed out, continuing anyway...');
+                        });
+                        clearTimeout(wakeTimeout);
+                    } catch (wakeError) {
+                        console.log('Wake-up request error (non-critical):', wakeError);
+                    }
+                    
+                    // Get PayU hash from backend
+                    const hashEndpoint = `${BACKEND_URL}/payu/hash`;
+                    console.log('Hash endpoint:', hashEndpoint);
+                    
+                    const payuData = { 
                         txnid, 
                         amount, 
                         productinfo, 
@@ -1851,42 +1921,125 @@
                         surl, 
                         furl,
                         udf1: merchantPhone  // Include merchant phone in UDF for tracking
-                    })
-                });
-                const data = await resp.json();
-                if (!resp.ok) { alert(data.error || 'Hash error'); return; }
+                    };
+                    console.log('PayU request data:', payuData);
+                    
+                    // Add timeout to fetch (30 seconds)
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 30000);
+                    
+                    console.log('Making fetch request to:', hashEndpoint);
+                    console.log('Request will timeout after 30 seconds');
+                    
+                    let resp;
+                    try {
+                        const fetchPromise = fetch(hashEndpoint, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payuData),
+                            signal: controller.signal
+                        });
+                        
+                        console.log('Fetch promise created, waiting for response...');
+                        resp = await fetchPromise;
+                        clearTimeout(timeoutId);
+                        console.log('Fetch completed, status:', resp.status);
+                    } catch (fetchError) {
+                        clearTimeout(timeoutId);
+                        console.error('Fetch error caught:', fetchError);
+                        console.error('Error name:', fetchError.name);
+                        console.error('Error message:', fetchError.message);
+                        
+                        if (fetchError.name === 'AbortError') {
+                            console.error('Request timeout after 30 seconds - Render might be spinning up');
+                            throw new Error('Request timed out after 30 seconds. Render free tier may be spinning up. Please wait 1-2 minutes and try again.');
+                        } else if (fetchError.message && (fetchError.message.includes('Failed to fetch') || fetchError.message.includes('NetworkError') || fetchError.message.includes('network'))) {
+                            console.error('Network error detected:', fetchError);
+                            throw new Error('Network error: Cannot connect to backend server. The server might be down or unreachable. Please check your internet connection.');
+                        } else {
+                            console.error('Unknown fetch error:', fetchError);
+                            throw new Error('Failed to connect to payment server: ' + (fetchError.message || 'Unknown error'));
+                        }
+                    }
+                    
+                    console.log('Hash response status:', resp.status);
+                    
+                    if (!resp.ok) {
+                        const errorData = await resp.json().catch(() => ({ error: 'Unknown error' }));
+                        console.error('Hash error response:', errorData);
+                        alert(errorData.error || 'Hash error: ' + resp.status);
+                        return;
+                    }
+                    
+                    const data = await resp.json();
+                    console.log('Hash response data:', data);
 
-                const { key, hash } = data;
+                    if (!data.key || !data.hash) {
+                        console.error('Missing key or hash in response:', data);
+                        alert('Invalid response from server. Please try again.');
+                        return;
+                    }
 
-                // Build a form to submit to PayU
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = 'https://secure.payu.in/_payment'; // Production environment
+                    const { key, hash } = data;
+                    console.log('Got PayU credentials, proceeding with form submission...');
 
-                const fields = {
-                    key,
-                    txnid,
-                    amount,
-                    productinfo,
-                    firstname,
-                    email,
-                    phone: phone || merchantPhone,
-                    surl,
-                    furl,
-                    hash,
-                    udf1: merchantPhone  // Merchant phone number for PayU account tracking
-                };
-                Object.entries(fields).forEach(([k, v]) => {
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = k;
-                    input.value = v;
-                    form.appendChild(input);
-                });
-                document.body.appendChild(form);
-                form.submit();
+                    // Build a form to submit to PayU
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = 'https://secure.payu.in/_payment'; // Production environment
+
+                    const fields = {
+                        key,
+                        txnid,
+                        amount,
+                        productinfo,
+                        firstname,
+                        email,
+                        phone: phone || merchantPhone,
+                        surl,
+                        furl,
+                        hash,
+                        udf1: merchantPhone  // Merchant phone number for PayU account tracking
+                    };
+                    Object.entries(fields).forEach(([k, v]) => {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = k;
+                        input.value = v;
+                        form.appendChild(input);
+                    });
+                    document.body.appendChild(form);
+                    console.log('Submitting form to PayU...');
+                    form.submit();
+                } catch (innerError) {
+                    console.error('Error in PayU hash request:', innerError);
+                    throw innerError;
+                }
             } catch (e) {
-                alert('Unable to initiate payment. Start the hash server and try again.');
+                console.error('Error in processPayment:', e);
+                console.error('Error name:', e.name);
+                console.error('Error message:', e.message);
+                console.error('Error stack:', e.stack);
+                
+                let errorMessage = 'Unable to initiate payment. ';
+                
+                if (e.message) {
+                    errorMessage += e.message;
+                } else if (e.name === 'TypeError' && e.message && e.message.includes('fetch')) {
+                    errorMessage += 'Cannot connect to backend server. The server might be down or unreachable.';
+                } else {
+                    errorMessage += 'Please check console for details.';
+                }
+                
+                alert(errorMessage);
+            } finally {
+                // Re-enable the button
+                const payButton = document.querySelector('button[onclick="processPayment()"]');
+                if (payButton) {
+                    payButton.disabled = false;
+                    payButton.textContent = 'Pay Now';
+                    console.log('Button re-enabled');
+                }
             }
         }
     </script>

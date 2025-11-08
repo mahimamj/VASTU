@@ -95,15 +95,22 @@ app.post('/save-form', async (req, res) => {
     const GOOGLE_SCRIPT_URL = process.env.GOOGLE_APPS_SCRIPT_URL || '';
     const data = req.body || {};
     
+    console.log('Received form data:', JSON.stringify(data, null, 2));
+    console.log('GOOGLE_APPS_SCRIPT_URL configured:', !!GOOGLE_SCRIPT_URL);
+    
     if (!GOOGLE_SCRIPT_URL) {
       // If no Google Script URL, just log the data
-      console.log('Form submission:', JSON.stringify(data, null, 2));
+      console.warn('WARNING: GOOGLE_APPS_SCRIPT_URL not configured. Data will not be saved to Google Sheets.');
+      console.log('Form submission data:', JSON.stringify(data, null, 2));
       return res.json({ 
         success: true, 
-        message: 'Data logged (configure GOOGLE_APPS_SCRIPT_URL to save to Sheets)' 
+        message: 'Data logged (configure GOOGLE_APPS_SCRIPT_URL environment variable in Render to save to Sheets)',
+        warning: 'Data not saved to Google Sheets - GOOGLE_APPS_SCRIPT_URL not configured'
       });
     }
 
+    console.log('Forwarding data to Google Apps Script:', GOOGLE_SCRIPT_URL);
+    
     // Forward to Google Apps Script
     const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
@@ -111,16 +118,29 @@ app.post('/save-form', async (req, res) => {
       body: JSON.stringify(data)
     });
 
+    console.log('Google Apps Script response status:', response.status);
+    
     const result = await response.json();
+    console.log('Google Apps Script response:', result);
     
     if (response.ok) {
       return res.json(result);
     } else {
-      return res.status(500).json({ success: false, error: 'Failed to save to Google Sheets' });
+      console.error('Google Apps Script error:', result);
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Failed to save to Google Sheets',
+        details: result.error || 'Unknown error'
+      });
     }
   } catch (error) {
     console.error('Error saving form:', error);
-    return res.status(500).json({ success: false, error: error.message });
+    console.error('Error stack:', error.stack);
+    return res.status(500).json({ 
+      success: false, 
+      error: error.message || 'Unknown error occurred',
+      details: error.stack
+    });
   }
 });
 
