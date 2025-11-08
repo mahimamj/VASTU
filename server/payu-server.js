@@ -13,6 +13,19 @@ app.use(express.json());
 const PAYU_KEY = process.env.PAYU_KEY || '';
 const PAYU_SALT = process.env.PAYU_SALT || '';
 
+// Root route
+app.get('/', (_req, res) => {
+  res.json({ 
+    service: 'Vastu Backend API',
+    status: 'running',
+    endpoints: {
+      health: '/health',
+      payuHash: 'POST /payu/hash',
+      saveForm: 'POST /save-form'
+    }
+  });
+});
+
 // Simple health check
 app.get('/health', (_req, res) => {
   res.json({ ok: true, keyConfigured: Boolean(PAYU_KEY), saltConfigured: Boolean(PAYU_SALT) });
@@ -111,10 +124,25 @@ app.post('/save-form', async (req, res) => {
   }
 });
 
+// Catch-all for undefined routes
+app.use((req, res) => {
+  res.status(404).json({ 
+    error: 'Route not found',
+    path: req.path,
+    method: req.method,
+    availableEndpoints: {
+      health: 'GET /health',
+      payuHash: 'POST /payu/hash',
+      saveForm: 'POST /save-form'
+    }
+  });
+});
+
 const port = process.env.PORT || 5055;
 app.listen(port, () => {
   console.log(`PayU hash server listening on http://localhost:${port}`);
   console.log(`Form saving endpoint available at http://localhost:${port}/save-form`);
+  console.log(`Health check available at http://localhost:${port}/health`);
 });
 
 
