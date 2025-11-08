@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: vastu-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server/payu-server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PAYU_KEY
+        sync: false  # Set this in Render dashboard
+      - key: PAYU_SALT
+        sync: false  # Set this in Render dashboard
+      - key: GOOGLE_APPS_SCRIPT_URL
+        sync: false  # Set this in Render dashboard
+

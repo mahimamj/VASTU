@@ -76,20 +76,37 @@ app.post('/payu/hash', (req, res) => {
   }
 });
 
-// Form data saving endpoint (for local development)
-app.post('/save-form', (req, res) => {
+// Form data saving endpoint - forwards to Google Sheets via Apps Script
+app.post('/save-form', async (req, res) => {
   try {
+    const GOOGLE_SCRIPT_URL = process.env.GOOGLE_APPS_SCRIPT_URL || '';
     const data = req.body || {};
-    // Log to console (in production, this would forward to Google Sheets)
-    console.log('Form submission:', JSON.stringify(data, null, 2));
     
-    // In local dev, you can also save to a file or database
-    // For now, just log it and return success
-    return res.json({ 
-      success: true, 
-      message: 'Form data received (logged to console. Configure GOOGLE_APPS_SCRIPT_URL for production.)' 
+    if (!GOOGLE_SCRIPT_URL) {
+      // If no Google Script URL, just log the data
+      console.log('Form submission:', JSON.stringify(data, null, 2));
+      return res.json({ 
+        success: true, 
+        message: 'Data logged (configure GOOGLE_APPS_SCRIPT_URL to save to Sheets)' 
+      });
+    }
+
+    // Forward to Google Apps Script
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
     });
+
+    const result = await response.json();
+    
+    if (response.ok) {
+      return res.json(result);
+    } else {
+      return res.status(500).json({ success: false, error: 'Failed to save to Google Sheets' });
+    }
   } catch (error) {
+    console.error('Error saving form:', error);
     return res.status(500).json({ success: false, error: error.message });
   }
 });
